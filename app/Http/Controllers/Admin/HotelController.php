@@ -62,7 +62,7 @@ class HotelController extends Controller
 
         if ($request->hasFile('utility_bill')) {
             foreach ($request->file('utility_bill') as $photo) {
-                $hotel->addMedia($request->file('utility_bill'))->toMediaCollection('utility_bill');
+                $hotel->addMedia($photo)->toMediaCollection('utility_bill');
             }
         }
         return $this->success(new HotelResource($hotel), 'Hotel created');
