@@ -19,8 +19,9 @@ class Hotel extends Model implements HasMedia
 
     protected $casts = [
         'photos' => 'array',
-        // 'service_ids' => 'array',
-        // 'policy_ids' => 'array',
+        'service' => 'array',
+        'policy' => 'array',
+        'utility_bill' => 'array',
         'availability' => 'boolean',
     ];
     
