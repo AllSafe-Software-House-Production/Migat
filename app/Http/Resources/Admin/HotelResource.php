@@ -37,8 +37,10 @@ class HotelResource extends JsonResource
             'hotel_link' => $this->hotel_link,
             'phone' => $this->phone,
             'email' => $this->email,
-            'service_ids' => $this->service_ids,
-            'policy_ids' => $this->policy_ids,
+            'policy' => $this->policy,
+            'service' => $this->service,
+            // 'service_ids' => $this->service_ids,
+            // 'policy_ids' => $this->policy_ids,
             'images' => $this->getMedia('images')->map->getUrl() ?? [],
             'created_at' => $this->created_at,
         ];    

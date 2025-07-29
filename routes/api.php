@@ -49,3 +49,29 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('reviews', [ReviewController::class, 'store']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
+
+    Route::get('/run-migrations', function (Request $request) {
+        $key = $request->query('key');
+
+        if ($key !== 'hhhlol') {
+            abort(403);
+        }
+
+        Artisan::call('migrate', ['--force' => true]);
+        return 'Migration done.';
+    });
+
+    Route::get('/run-seeder', function (Request $request) {
+        $key = $request->query('key');
+
+        if ($key !== 'hhhlol') {
+            abort(403, 'Unauthorized');
+        }
+
+        Artisan::call('db:seed', [
+            '--class' => 'AdminPermissionsSeeder',
+            '--force' => true,
+        ]);
+
+        return 'Seeding done.';
+    });

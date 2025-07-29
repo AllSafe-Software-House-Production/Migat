@@ -12,9 +12,10 @@ class Rule extends Model
         'role_ids' => 'array',
     ];
 
-    public function roles()
+    public function getRolesListAttribute()
     {
         return Role::whereIn('id', $this->role_ids ?? [])->get();
     }
+
 
 }

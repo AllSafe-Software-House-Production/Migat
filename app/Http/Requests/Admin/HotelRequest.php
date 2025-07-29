@@ -49,11 +49,13 @@ class HotelRequest extends FormRequest
             'number_of_rooms' => 'required|integer|min:1',
             'phone' => 'required|string',
             'email' => 'required|email',
-            'service_ids' => 'nullable|array',
-            'service_ids.*' => 'exists:services,id',
+            // 'service_ids' => 'nullable|array',
+            // 'service_ids.*' => 'exists:services,id',
+            // 'policy_ids' => 'nullable|array',
+            // 'policy_ids.*' => 'exists:policies,id',
             'hotel_link' => 'nullable|url|max:255',
-            'policy_ids' => 'nullable|array',
-            'policy_ids.*' => 'exists:policies,id',
+            'policy' => 'nullable|string',
+            'service' => 'nullable|string',
             'photos.*' => 'nullable|image|max:2048',
         ];
     }

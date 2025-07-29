@@ -20,11 +20,15 @@ class CheckRolePermission
             return response()->json(['message' => 'No permission rule assigned.'], 403);
         }
 
-        $allowedRoles = $user->rule->roles->pluck('name')->toArray();
+        $allowedRoutes = $user->rule->roles_list->pluck('route')->toArray() ?? [];
 
-        $currentSegment = $request->segment(2);
+        $currentRoute = '/' . ltrim($request->route()->uri(), '/');
 
-        if (!in_array($currentSegment, $allowedRoles)) {
+        if (str_starts_with($currentRoute, '/api/')) {
+            $currentRoute = substr($currentRoute, 4);
+        }
+
+        if (!in_array($currentRoute, $allowedRoutes)) {
             return response()->json(['message' => 'You do not have permission to access this module.'], 403);
         }
 
