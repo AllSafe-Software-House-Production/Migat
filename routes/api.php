@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserProfileController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -76,3 +77,19 @@ Route::middleware('auth:sanctum')->group(function () {
 
         return 'Seeding done.';
     });
+
+    Route::get('/create-storage-link', function (Request $request) {
+    $key = $request->query('key');
+
+    if ($key !== 'hhhlol') {
+        abort(403, 'Unauthorized');
+    }
+
+    if (File::exists(public_path('storage'))) {
+        return 'Symlink already exists.';
+    }
+
+    Artisan::call('storage:link');
+
+    return 'Storage symlink created.';
+});
