@@ -52,6 +52,9 @@ class HotelController extends Controller
     {
         $data = $request->validated();
 
+        unset($data['photos']);
+        unset($data['utility_bill']);
+
         $hotel = Hotel::create($data);
 
         if ($request->hasFile('photos')) {
@@ -65,6 +68,7 @@ class HotelController extends Controller
                 $hotel->addMedia($photo)->toMediaCollection('utility_bill');
             }
         }
+
         return $this->success(new HotelResource($hotel), 'Hotel created');
     }
 
@@ -76,12 +80,16 @@ class HotelController extends Controller
         return $this->success(new HotelResource($hotel));
     }
 
-    public function update(HotelRequest $request, $id)
+    public function update(HotelRequest $request, $id) 
     {
         $hotel = Hotel::find($id);
         if (! $hotel) return $this->fail('Hotel not found', 404);
 
-        $hotel->update($request->validated());
+        $data = $request->validated();
+
+        unset($data['photos'], $data['utility_bill']);
+
+        $hotel->update($data);
 
         if ($request->hasFile('photos')) {
             $hotel->clearMediaCollection('images');
@@ -93,12 +101,13 @@ class HotelController extends Controller
         if ($request->hasFile('utility_bill')) {
             $hotel->clearMediaCollection('utility_bill');
             foreach ($request->file('utility_bill') as $photo) {
-                $hotel->addMedia($request->file('utility_bill'))->toMediaCollection('utility_bill');
+                $hotel->addMedia($photo)->toMediaCollection('utility_bill');
             }
         }
 
         return $this->success(new HotelResource($hotel), 'Hotel updated');
     }
+
 
     public function destroy($id)
     {
