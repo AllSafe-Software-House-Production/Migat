@@ -79,17 +79,23 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('/create-storage-link', function (Request $request) {
-    $key = $request->query('key');
+        $key = $request->query('key');
 
-    if ($key !== 'hhhlol') {
-        abort(403, 'Unauthorized');
-    }
+        if ($key !== 'hhhlol') {
+            abort(403, 'Unauthorized');
+        }
 
-    if (File::exists(public_path('storage'))) {
-        return 'Symlink already exists.';
-    }
+        if (File::exists(public_path('storage'))) {
+            return 'Symlink already exists.';
+        }
 
-    Artisan::call('storage:link');
-
-    return 'Storage symlink created.';
-});
+        try {
+            Artisan::call('storage:link');
+            return 'Storage symlink created.';
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Could not create symlink',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    });
