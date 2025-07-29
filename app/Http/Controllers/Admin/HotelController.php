@@ -61,7 +61,9 @@ class HotelController extends Controller
         }
 
         if ($request->hasFile('utility_bill')) {
-            $hotel->addMedia($request->file('utility_bill'))->toMediaCollection('utility_bill');
+            foreach ($request->file('utility_bill') as $photo) {
+                $hotel->addMedia($request->file('utility_bill'))->toMediaCollection('utility_bill');
+            }
         }
         return $this->success(new HotelResource($hotel), 'Hotel created');
     }
@@ -90,7 +92,9 @@ class HotelController extends Controller
 
         if ($request->hasFile('utility_bill')) {
             $hotel->clearMediaCollection('utility_bill');
-            $hotel->addMedia($request->file('utility_bill'))->toMediaCollection('utility_bill');
+            foreach ($request->file('utility_bill') as $photo) {
+                $hotel->addMedia($request->file('utility_bill'))->toMediaCollection('utility_bill');
+            }
         }
 
         return $this->success(new HotelResource($hotel), 'Hotel updated');

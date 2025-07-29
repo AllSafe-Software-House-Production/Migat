@@ -28,7 +28,7 @@ class HotelResource extends JsonResource
             'commission' => $this->commission,
             'commercial_register' => $this->commercial_register,
             'tourism_license' => $this->tourism_license,
-            'utility_bill' => $this->getFirstMediaUrl('utility_bill') ?? null,
+            'utility_bill' => $this->getMedia('utility_bill')->map->getUrl() ?? [],
             'owner_id' => $this->owner_id,
             'owner_name' => $this->owner->name,
             'ipan' => $this->ipan,

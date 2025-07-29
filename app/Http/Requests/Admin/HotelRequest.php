@@ -42,7 +42,7 @@ class HotelRequest extends FormRequest
             'commission' => 'nullable|numeric|min:0|max:100',
             'commercial_register' => 'nullable|string',
             'tourism_license' => 'nullable|string',
-            'utility_bill' => 'nullable|image|max:2048',
+            'utility_bill.*' => 'nullable|image|max:2048',
             'owner_id' => 'required|exists:users,id',
             'ipan' => 'nullable|string',
             'visa' => 'nullable|string',
@@ -54,8 +54,8 @@ class HotelRequest extends FormRequest
             // 'policy_ids' => 'nullable|array',
             // 'policy_ids.*' => 'exists:policies,id',
             'hotel_link' => 'nullable|url|max:255',
-            'policy' => 'nullable|string',
-            'service' => 'nullable|string',
+            'policy' => 'nullable|array',
+            'service' => 'nullable|array',
             'photos.*' => 'nullable|image|max:2048',
         ];
     }
