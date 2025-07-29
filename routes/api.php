@@ -4,13 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\FavoriteController;
-use App\Http\Controllers\API\HotelController;
-use App\Http\Controllers\API\PackageController;
+use App\Http\Controllers\Api\HotelController;
+use App\Http\Controllers\Api\PackageController;
 use App\Http\Controllers\Api\ReligiousTourController;
 use App\Http\Controllers\Api\RequestController;
-use App\Http\Controllers\API\ReservationController;
-use App\Http\Controllers\API\ReviewController;
-use App\Http\Controllers\API\UserProfileController;
+use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\UserProfileController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
