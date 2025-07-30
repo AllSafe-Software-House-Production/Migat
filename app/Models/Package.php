@@ -13,19 +13,21 @@ class Package extends Model implements HasMedia
     protected $fillable = [
         'name', 'price', 'from', 'to', 'transportation', 'trip_type',
         'type', 'description', 'travel_company', 'images',
-        'no_of_days', 'hotel_location', 'hotel_name', 'room_type', 'services', 'short_video', 'hotel_price', 'hotel_trip_type', 'hotel_from', 'hotel_to', 'hotel_type', 'hotel_images'
+        'no_of_days', 'hotel_location', 'hotel_name', 'room_type', 'services', 'short_videos', 'hotel_price', 'hotel_trip_type', 'hotel_from', 'hotel_to', 'hotel_type', 'hotel_images'
     ];
 
     protected $casts = [
         'images' => 'array',
         'services' => 'array',
+        'hotel_images' => 'array',
+        'short_videos' => 'array',
     ];
 
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('packages');
         $this->addMediaCollection('hotel_images');
-        $this->addMediaCollection('short_video');
+        $this->addMediaCollection('short_videos');
     }
 
 }

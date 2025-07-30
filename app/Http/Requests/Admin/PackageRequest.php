@@ -52,7 +52,7 @@ class PackageRequest extends FormRequest
             'hotel_to' => 'sometimes|date|after_or_equal:hotel_from',
             'hotel_type' => 'sometimes|string|max:255', // Makah or Madinah
             'hotel_images.*' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'short_video' => 'sometimes|file|mimes:mp4,avi,mov,wmv|max:10240',
+            'short_videos.*' => 'sometimes|file|mimes:mp4,avi,mov,wmv|max:10240',
         ];
     }
 
@@ -82,7 +82,7 @@ class PackageRequest extends FormRequest
             'hotel_to' => 'sometimes|date|after_or_equal:hotel_from',
             'hotel_type' => 'sometimes|string|max:255', // Makah or Madinah
             'hotel_images.*' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'short_video' => 'sometimes|file|mimes:mp4,avi,mov,wmv|max:10240',
+            'short_videos.*' => 'sometimes|file|mimes:mp4,avi,mov,wmv|max:10240',
         ];
     }
 

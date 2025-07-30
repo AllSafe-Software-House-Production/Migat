@@ -56,12 +56,14 @@ class PackageController extends Controller
     {
         $data = $request->validated();
         unset($data['images']);
+        unset($data['hotel_images']);
+        unset($data['short_videos']);
 
         $package = Package::create($data);
 
         $imageIds = [];
         $hotelImageIds = [];
-        $shortvideoId = null;
+        $shortvideosId = [];
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -77,16 +79,17 @@ class PackageController extends Controller
             }
         }
 
-        if ($request->hasFile('short_video')) {
-            $media = $package->addMedia($request->file('short_video'))->toMediaCollection('short_video');
-            $shortvideoId = $media->id;
+        if ($request->hasFile('short_videos')) {
+            foreach ($request->file('short_videos') as $video) {
+                $media = $package->addMedia($video)->toMediaCollection('short_videos');
+                $shortvideosId[] = $media->id;
+            }
         }
-
 
         $package->update([
             'images' => $imageIds,
             'hotel_images' => $hotelImageIds,
-            'short_video' => $shortvideoId,
+            'short_videos' => $shortvideosId,
         ]);
 
         return $this->success(new PackageResource($package), 'Package created');
@@ -113,7 +116,7 @@ class PackageController extends Controller
 
         $imageIds = $package->images ?? [];
         $hotelImageIds = $package->hotel_images ?? [];
-        $shortvideoId = $package->short_video ?? null;
+        $shortvideosId = $package->short_videos ?? [];
 
         if ($request->hasFile('images')) {
             $package->clearMediaCollection('packages');
@@ -143,14 +146,17 @@ class PackageController extends Controller
             ]);
         }
 
-        if ($request->hasFile('short_video')) {
-            $package->clearMediaCollection('short_video');
+        if ($request->hasFile('short_videos')) {
+            $package->clearMediaCollection('short_videos');
 
-            $media = $package->addMedia($request->file('short_video'))->toMediaCollection('short_video');
-            $shortvideoId = $media->id;
+            $shortvideosId = [];
+            foreach ($request->file('short_videos') as $video) {
+                $media = $package->addMedia($video)->toMediaCollection('short_videos');
+                $shortvideosId[] = $media->id;
+            }
 
             $package->update([
-                'short_video' => $shortvideoId,
+                'short_videos' => $shortvideosId,
             ]);
         }
 

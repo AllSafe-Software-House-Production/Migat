@@ -42,8 +42,8 @@ class PackageResource extends JsonResource
                     'hotel_images' => $this->getMedia('hotel_images')->map(function ($media) {
                         return $media->getUrl() ?? [];
                     }),
-                    'short_video' => $this->getMedia('short_video')->map(function ($media) {
-                        return $media->getUrl() ?? null;
+                    'short_videos' => $this->getMedia('short_videos')->map(function ($media) {
+                        return $media->getUrl() ?? [];
                     }),
                 ],
 

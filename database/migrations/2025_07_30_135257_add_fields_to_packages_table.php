@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::table('packages', function (Blueprint $table) {
             $table->integer('no_of_days')->nullable();
-            $table->decimal('hotel_price', 10, 2);
-            $table->string('hotel_trip_type');
-            $table->date('hotel_from');
-            $table->date('hotel_to');
+            $table->decimal('hotel_price', 10, 2)->nullable();
+            $table->string('hotel_trip_type')->nullable();
+            $table->date('hotel_from')->nullable();
+            $table->date('hotel_to')->nullable();
             $table->string('hotel_type')->nullable(); // Makah or Madinah
             $table->string('hotel_name')->nullable();
             $table->string('hotel_location')->nullable();
             $table->string('room_type')->nullable();
             $table->json('services')->nullable();
             $table->json('hotel_images')->nullable();
-            $table->string('short_video')->nullable();
+            $table->json('short_videos')->nullable();
         });
     }
 
@@ -40,7 +40,7 @@ return new class extends Migration
                 'hotel_full_location',
                 'room_type',
                 'services',
-                'short_video'
+                'short_videos'
             ]);
         });
     }
