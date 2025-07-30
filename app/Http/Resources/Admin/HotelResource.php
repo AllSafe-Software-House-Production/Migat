@@ -42,6 +42,7 @@ class HotelResource extends JsonResource
             // 'service_ids' => $this->service_ids,
             // 'policy_ids' => $this->policy_ids,
             'images' => $this->getMedia('images')->map->getUrl() ?? [],
+            'rooms' => RoomResource::collection($this->rooms),
             'created_at' => $this->created_at,
         ];    
     }
