@@ -91,15 +91,17 @@ class HotelController extends Controller
 
         $hotel->update($data);
 
+        // ✅ Clear and replace 'photos' if new ones are uploaded
         if ($request->hasFile('photos')) {
-            $hotel->clearMediaCollection('images');
+            $hotel->clearMediaCollection('images'); // 👈 this clears old media
             foreach ($request->file('photos') as $photo) {
                 $hotel->addMedia($photo)->toMediaCollection('images');
             }
         }
 
+        // ✅ Clear and replace 'utility_bill' if new ones are uploaded
         if ($request->hasFile('utility_bill')) {
-            $hotel->clearMediaCollection('utility_bill');
+            $hotel->clearMediaCollection('utility_bill'); // 👈 this clears old media
             foreach ($request->file('utility_bill') as $photo) {
                 $hotel->addMedia($photo)->toMediaCollection('utility_bill');
             }
