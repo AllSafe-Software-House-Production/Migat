@@ -24,6 +24,7 @@ class RoomResource extends JsonResource
             'number_of_adults' => $this->number_of_adults,
             'number_of_children' => $this->number_of_children,
             'room_photos' => $this->getMedia('room_photos')->map->getUrl(),
+            'services' => $this->services,
             'created_at' => $this->created_at,
         ];    
     }

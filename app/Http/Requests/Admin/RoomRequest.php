@@ -37,6 +37,8 @@ class RoomRequest extends FormRequest
             'number_of_adults' => 'required|integer|min:1',
             'number_of_children' => 'nullable|integer|min:0',
             'room_photos.*' => 'nullable|image|max:2048',
+            'services' => ['nullable', 'array'],
+            'services.*' => ['string'],
         ];
     }
 

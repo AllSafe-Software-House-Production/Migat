@@ -18,6 +18,11 @@ class Room extends Model implements HasMedia
         'number_of_beds',
         'number_of_adults',
         'number_of_children',
+        'services',
+    ];
+
+    protected $casts = [
+        'services' => 'array',
     ];
 
     public function hotel()
