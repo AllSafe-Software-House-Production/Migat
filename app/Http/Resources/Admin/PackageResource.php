@@ -28,7 +28,27 @@ class PackageResource extends JsonResource
             'type' => $this->type,
             'description' => $this->description,
             'travel_company' => $this->travel_company,
+            'hotel' => [
+                    'no_of_days' => $this->no_of_days,
+                    'hotel_location' => $this->hotel_location,
+                    'hotel_name' => $this->hotel_name,
+                    'room_type' => $this->room_type,
+                    'services' => $this->services,
+                    'hotel_price' => $this->hotel_price,
+                    'hotel_trip_type' => $this->hotel_trip_type,
+                    'hotel_from' => $this->hotel_from,
+                    'hotel_to' => $this->hotel_to,
+                    'hotel_type' => $this->hotel_type,
+                    'hotel_images' => $this->getMedia('hotel_images')->map(function ($media) {
+                        return $media->getUrl() ?? [];
+                    }),
+                    'short_video' => $this->getMedia('short_video')->map(function ($media) {
+                        return $media->getUrl() ?? null;
+                    }),
+                ],
+
+
             'created_at' => $this->created_at,
-        ];    
+        ];
     }
 }

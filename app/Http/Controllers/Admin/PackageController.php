@@ -60,6 +60,8 @@ class PackageController extends Controller
         $package = Package::create($data);
 
         $imageIds = [];
+        $hotelImageIds = [];
+        $shortvideoId = null;
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -68,8 +70,23 @@ class PackageController extends Controller
             }
         }
 
+        if ($request->hasFile('hotel_images')) {
+            foreach ($request->file('hotel_images') as $image) {
+                $media = $package->addMedia($image)->toMediaCollection('hotel_images');
+                $hotelImageIds[] = $media->id;
+            }
+        }
+
+        if ($request->hasFile('short_video')) {
+            $media = $package->addMedia($request->file('short_video'))->toMediaCollection('short_video');
+            $shortvideoId = $media->id;
+        }
+
+
         $package->update([
             'images' => $imageIds,
+            'hotel_images' => $hotelImageIds,
+            'short_video' => $shortvideoId,
         ]);
 
         return $this->success(new PackageResource($package), 'Package created');
@@ -89,12 +106,14 @@ class PackageController extends Controller
 
         $package = Package::find($id);
         if (! $package) return $this->fail('Package not found', 404);
-        
+
         unset($data['images']);
 
         $package->update($data);
 
         $imageIds = $package->images ?? [];
+        $hotelImageIds = $package->hotel_images ?? [];
+        $shortvideoId = $package->short_video ?? null;
 
         if ($request->hasFile('images')) {
             $package->clearMediaCollection('packages');
@@ -107,6 +126,31 @@ class PackageController extends Controller
 
             $package->update([
                 'images' => $imageIds,
+            ]);
+        }
+
+        if ($request->hasFile('hotel_images')) {
+            $package->clearMediaCollection('hotel_images');
+
+            $hotelImageIds = [];
+            foreach ($request->file('hotel_images') as $image) {
+                $media = $package->addMedia($image)->toMediaCollection('hotel_images');
+                $hotelImageIds[] = $media->id;
+            }
+
+            $package->update([
+                'hotel_images' => $hotelImageIds,
+            ]);
+        }
+
+        if ($request->hasFile('short_video')) {
+            $package->clearMediaCollection('short_video');
+
+            $media = $package->addMedia($request->file('short_video'))->toMediaCollection('short_video');
+            $shortvideoId = $media->id;
+
+            $package->update([
+                'short_video' => $shortvideoId,
             ]);
         }
 
