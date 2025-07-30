@@ -45,8 +45,16 @@ class ReservationRequest extends FormRequest
     private function update()
     {
         return [
-            'status' => 'required|in:pending,confirmed,cancelled',
-            'balance' => 'required|numeric|min:0',
+            'user_id' => 'sometimes|exists:users,id',
+            'room_id' => 'sometimes|exists:rooms,id',
+            'check_in' => 'sometimes|date|after_or_equal:today',
+            'check_out' => 'sometimes|date|after:check_in',
+            'total_price' => 'sometimes|numeric|min:0',
+            'status' => 'in:pending,confirmed,cancelled',
+            'source' => 'nullable|string|max:255',
+            'self_check_in' => 'boolean',
+            'self_check_out' => 'boolean',
+            'balance' => 'sometimes|numeric|min:0',
         ];
     }
 
