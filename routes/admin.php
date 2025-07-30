@@ -25,7 +25,8 @@ Route::prefix('admin')->group(function () {
 
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('rules', RuleController::class);
-        Route::resource('hotels', HotelController::class);
+        Route::post('hotels/{id}', [HotelController::class, 'update']);
+        Route::apiResource('hotels', HotelController::class);
         Route::apiResource('reviews', ReviewController::class);
         Route::apiResource('rooms', RoomController::class);
         Route::apiResource('reservations', ReservationController::class);
