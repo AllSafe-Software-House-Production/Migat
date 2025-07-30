@@ -54,14 +54,27 @@ class PackageController extends Controller
 
     public function store(PackageRequest $request)
     {
-        $package = Package::create($request->validated());
+        $data = $request->validated();
+        unset($data['images']);
+
+        $package = Package::create($data);
+
+        $imageIds = [];
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $package->addMedia($image)->toMediaCollection('packages');
+                $media = $package->addMedia($image)->toMediaCollection('packages');
+                $imageIds[] = $media->id;
             }
         }
+
+        $package->update([
+            'images' => $imageIds,
+        ]);
+
         return $this->success(new PackageResource($package), 'Package created');
     }
+
 
     public function show($id)
     {
@@ -70,16 +83,36 @@ class PackageController extends Controller
         return $this->success(new PackageResource($package), 'Package fetched');
     }
 
-    public function update(PackageRequest $request, Package $package)
+    public function update(PackageRequest $request, $id)
     {
-        $package->update($request->validated());
+        $data = $request->validated();
+
+        $package = Package::find($id);
+        if (! $package) return $this->fail('Package not found', 404);
+        
+        unset($data['images']);
+
+        $package->update($data);
+
+        $imageIds = $package->images ?? [];
+
         if ($request->hasFile('images')) {
+            $package->clearMediaCollection('packages');
+
+            $imageIds = [];
             foreach ($request->file('images') as $image) {
-                $package->addMedia($image)->toMediaCollection('images');
+                $media = $package->addMedia($image)->toMediaCollection('packages');
+                $imageIds[] = $media->id;
             }
+
+            $package->update([
+                'images' => $imageIds,
+            ]);
         }
+
         return $this->success(new PackageResource($package), 'Package updated');
     }
+
 
     public function destroy(Package $package)
     {

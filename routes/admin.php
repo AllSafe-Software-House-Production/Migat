@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\RuleController;
 use App\Http\Controllers\Admin\SponsorController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::prefix('admin')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -36,6 +37,7 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('sponsors', SponsorController::class);
         Route::apiResource('faqs', FaqController::class);
         Route::apiResource('requests', RequestController::class);
+        Route::apiResource('users', UserController::class);
 
 
 

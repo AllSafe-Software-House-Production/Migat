@@ -37,7 +37,9 @@ class RoomController extends Controller
 
     public function store(RoomRequest $request)
     {
-        $room = Room::create($request->validated());
+        $data = $request->validated();
+        unset($data['room_photos']);
+        $room = Room::create($data);
 
         if ($request->hasFile('room_photos')) {
             foreach ($request->file('room_photos') as $photo) {
@@ -58,10 +60,13 @@ class RoomController extends Controller
 
     public function update(RoomRequest $request, $id)
     {
+        $data = $request->validated();
         $room = Room::find($id);
         if (! $room) return $this->fail('Room not found', 404);
 
-        $room->update($request->validated());
+        unset($data['room_photos']);
+
+        $room->update($data);
 
         if ($request->hasFile('room_photos')) {
             $room->clearMediaCollection('room_photos');

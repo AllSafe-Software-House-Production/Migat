@@ -32,19 +32,26 @@ class RuleController extends Controller
         return $this->success(new RuleResource($rule), 'Rule created');
     }
 
-    public function show(Rule $rule)
+    public function show($id)
     {
+        $rule = Rule::find($id);
+        if (! $rule) return $this->fail('Rule not found', 404);
         return $this->success(new RuleResource($rule), 'Rule details');
     }
 
-    public function update(RuleRequest $request, Rule $rule)
+    public function update(RuleRequest $request, $id)
     {
+        $rule = Rule::find($id);
+        if (! $rule) return $this->fail('Rule not found', 404);
+
         $rule->update($request->validated());
         return $this->success(new RuleResource($rule), 'Rule updated');
     }
 
-    public function destroy(Rule $rule)
+    public function destroy($id)
     {
+        $rule = Rule::find($id);
+        if (! $rule) return $this->fail('Rule not found', 404);
         $rule->delete();
         return $this->success(null, 'Rule deleted');
     }

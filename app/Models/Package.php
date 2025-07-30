@@ -12,7 +12,11 @@ class Package extends Model implements HasMedia
 
     protected $fillable = [
         'name', 'price', 'from', 'to', 'transportation', 'trip_type',
-        'type', 'description', 'travel_company'
+        'type', 'description', 'travel_company', 'images'
+    ];
+
+    protected $casts = [
+    'images' => 'array',
     ];
 
     public function registerMediaCollections(): void

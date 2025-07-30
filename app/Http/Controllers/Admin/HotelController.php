@@ -56,18 +56,27 @@ class HotelController extends Controller
         unset($data['utility_bill']);
 
         $hotel = Hotel::create($data);
+        $photoIds = [];
+        $utilityBillIds = [];
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $hotel->addMedia($photo)->toMediaCollection('images');
+                $media = $hotel->addMedia($photo)->toMediaCollection('images');
+                $photoIds[] = $media->id;
             }
         }
 
         if ($request->hasFile('utility_bill')) {
-            foreach ($request->file('utility_bill') as $photo) {
-                $hotel->addMedia($photo)->toMediaCollection('utility_bill');
+            foreach ($request->file('utility_bill') as $bill) {
+                $media = $hotel->addMedia($bill)->toMediaCollection('utility_bill');
+                $utilityBillIds[] = $media->id;
             }
         }
+
+        $hotel->update([
+            'photos' => $photoIds,
+            'utility_bill' => $utilityBillIds,
+        ]);
 
         return $this->success(new HotelResource($hotel), 'Hotel created');
     }
@@ -91,21 +100,33 @@ class HotelController extends Controller
 
         $hotel->update($data);
 
-        // ✅ Clear and replace 'photos' if new ones are uploaded
+        $photoIds = $hotel->photos ?? [];
+        $utilityBillIds = $hotel->utility_bill ?? [];
+
         if ($request->hasFile('photos')) {
-            $hotel->clearMediaCollection('images'); // 👈 this clears old media
+            $hotel->clearMediaCollection('images');
+
+            $photoIds = []; 
             foreach ($request->file('photos') as $photo) {
-                $hotel->addMedia($photo)->toMediaCollection('images');
+                $media = $hotel->addMedia($photo)->toMediaCollection('images');
+                $photoIds[] = $media->id;
             }
         }
 
-        // ✅ Clear and replace 'utility_bill' if new ones are uploaded
         if ($request->hasFile('utility_bill')) {
-            $hotel->clearMediaCollection('utility_bill'); // 👈 this clears old media
-            foreach ($request->file('utility_bill') as $photo) {
-                $hotel->addMedia($photo)->toMediaCollection('utility_bill');
+            $hotel->clearMediaCollection('utility_bill');
+
+            $utilityBillIds = []; 
+            foreach ($request->file('utility_bill') as $bill) {
+                $media = $hotel->addMedia($bill)->toMediaCollection('utility_bill');
+                $utilityBillIds[] = $media->id;
             }
         }
+
+        $hotel->update([
+            'photos' => $photoIds,
+            'utility_bill' => $utilityBillIds,
+        ]);
 
         return $this->success(new HotelResource($hotel), 'Hotel updated');
     }

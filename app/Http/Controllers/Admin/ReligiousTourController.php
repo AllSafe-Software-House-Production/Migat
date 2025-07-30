@@ -22,10 +22,16 @@ class ReligiousTourController extends Controller
     {
         $data = $request->validated();
 
+        unset($data['photos']);
+        unset($data['image']);
+
         $tour = ReligiousTour::create($data);
 
+        $image =0;
+
         if ($request->hasFile('image')) {
-            $tour->addMedia($request->file('image'))->toMediaCollection('religious_image');
+            $media =$tour->addMedia($request->file('image'))->toMediaCollection('religious_image');
+            $image = $media->id;
         }
 
         if ($request->hasFile('photos')) {
@@ -33,6 +39,10 @@ class ReligiousTourController extends Controller
                 $tour->addMedia($photo)->toMediaCollection('religious_tour');
             }
         }
+
+        $tour->update([
+            'image' => $image
+        ]);
 
         return $this->success(new ReligiousTourResource($tour), 'Tour created');
     }
@@ -51,11 +61,16 @@ class ReligiousTourController extends Controller
 
         $data = $request->validated();
 
+        unset($data['photos'], $data['image']);
+
         $religiousTour->update($data);
+
+        $image = $religiousTour->image;
 
         if ($request->hasFile('image')) {
             $religiousTour->clearMediaCollection('religious_image');
-            $religiousTour->addMedia($request->file('image'))->toMediaCollection('religious_image');
+            $media = $religiousTour->addMedia($request->file('image'))->toMediaCollection('religious_image');
+            $image = $media->id;
         }
 
         if ($request->hasFile('photos')) {
@@ -64,6 +79,10 @@ class ReligiousTourController extends Controller
                 $religiousTour->addMedia($photo)->toMediaCollection('religious_tour');
             }
         }
+
+        $religiousTour->update([
+            'image' => $image
+        ]);
 
         return $this->success(new ReligiousTourResource($religiousTour), 'Tour updated');
     }
